@@ -25,13 +25,13 @@ if __name__ == "__main__":
     print(len(texts))
 
     embeddings = OpenAIEmbeddings(openai_api_key=os.environ["OPENAI_API_KEY"])
-    document_search = Pinecone.from_documents(
-        texts, embeddings, index_name="pine_cone_index_name"
+    index = Pinecone.from_documents(
+        texts, embeddings, index_name="pinecone_index_name"
     )
 
     # return_source_documents= True
     qa_retrieval = RetrievalQA.from_chain_type(
-        llm=OpenAI(), chain_type="stuff", retriever=document_search.as_retriever()
+        llm=OpenAI(), chain_type="stuff", retriever=index.as_retriever()
     )
 
     query = "Query"
